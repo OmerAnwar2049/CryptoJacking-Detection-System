@@ -20,7 +20,9 @@ def get_processes_info():
                 continue
             # get the name of the file executed
             name = process.name()
+
             if name != "chrome.exe":
+                # Ignore any process that is not chrome.exe
                 continue
             # get the time the process was spawned
             try:
@@ -34,7 +36,7 @@ def get_processes_info():
             except psutil.AccessDenied:
                 cores = 0
             # get the CPU usage percentage
-            cpu_usage = process.cpu_percent()
+            cpu_usage = process.cpu_percent(interval=0.1) / cores
             # get the status of the process (running, idle, etc.)
             status = process.status()
             try:
