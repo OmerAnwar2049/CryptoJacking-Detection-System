@@ -6,6 +6,8 @@ from datetime import datetime
 import pandas as pd
 import time
 import os
+import json
+from util import *
 
 def get_processes_info():
     # the list the contain all process dictionaries
@@ -95,7 +97,6 @@ def get_size(bytes):
             return f"{bytes:.2f}{unit}B"
         bytes /= 1024
 
-
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Process Viewer & Monitor")
@@ -118,6 +119,9 @@ if __name__ == "__main__":
     live_update = args.live_update
 
 
+    # suspicious process list
+    suspicious_processes = []
+
     # print the processes for the first time
     processes = get_processes_info()
     df = construct_dataframe(processes)
@@ -137,3 +141,13 @@ if __name__ == "__main__":
         elif n > 0:
             print(df.head(n).to_string())
         time.sleep(0.7)
+
+    suspicious_processes = extract_suspicious(processes)
+    print("Suspicous processes:")
+    for process in suspicious_processes:
+        print("=============")
+        print(process["pid"])
+        print(process["name"])
+        print(process["cpu_usage"])
+        print(process["create_time"])
+        print("=============\n")
