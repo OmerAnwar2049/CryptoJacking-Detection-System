@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Rule1",
+    "description": "Rule 1 description",
+    "action": "cpu_usage",
+    "limit": 60
+  },
+  {
+    "name": "Rule2",
+    "description": "Rule 2 description",
+    "action": "time_elapsed",
+    "limit": 10
+  },
+  {
+    "name": "Rule3",
+    "description": "Rule 3 description",
+    "action": "cpu_usage",
+    "limit": 80
+  }
+]

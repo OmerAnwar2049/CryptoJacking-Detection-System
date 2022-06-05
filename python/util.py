@@ -6,6 +6,7 @@ from datetime import datetime
 import pandas as pd
 import time
 import os
+import json
 
 def get_processes_info():
     # the list the contain all process dictionaries
@@ -21,7 +22,7 @@ def get_processes_info():
             # get the name of the file executed
             name = process.name()
 
-            if name != "chrome.exe":
+            if name not in ["chrome.exe", "opera.exe", "firefox.exe", "msedge.exe"]:
                 # Ignore any process that is not chrome.exe
                 continue
             # get the time the process was spawned
@@ -149,4 +150,57 @@ def extract_suspicious(summary = False):
         time.sleep(0.7)
 
     return suspicious(processes)
+    
+
+class Rule:
+    def __init__(self, name, description, action, limit):
+        self.name = name
+        self.description = description
+        self.action = action
+        self.limit = limit
+        self.start_time = time.time()
+    
+    def __str__(self):
+        return f"{self.name} - {self.description} - {self.action} - {self.limit}"
+
+
+class RuleBuilder:
+    def __init__(self, rules,process_name,process_pid ):
+        self.current_rule = 0
+        self.rules = rules
+        self.rules_count = len(self.rules)
+        self.process_name = process_name
+        self.process_pid = process_pid
+
+    def check_rules(self):
+        if self.current_rule == -1:
+            return
+        if self.current_rule < self.rules_count:
+            rule = self.rules[self.current_rule]
+            if rule.action == "time_elapsed" and rule.limit <= time.time() - rule.start_time:
+                print(f'Rule Triggered {self.current_rule}!')
+                print(f"{rule.name} - {rule.description} - {rule.action} - {rule.limit}")
+                print()
+                self.current_rule += 1
+                return True
+
+            current_cpu_usage = (psutil.Process(self.process_pid).cpu_percent(interval=0.1) / 16)
+            if rule.action == "cpu_usage" and rule.limit <=current_cpu_usage:
+                print(f'Rule Triggered {self.current_rule}!')
+                print(f"{rule.name} - {rule.description} - {rule.action} - {rule.limit}")
+                print()
+                self.current_rule += 1
+                return True
+        if self.current_rule == self.rules_count:
+            self.current_rule = -1
+            print("All rules have been triggered")
+
+def loadRules():
+    with open("python\\Rules\\rules.json", "r") as f:
+        rules = json.load(f)
+    ruleObjects = []
+    for rule in rules:
+        ruleObjects.append(Rule(rule["name"], rule["description"], rule["action"], rule["limit"]))        
+    return ruleObjects
+
     
