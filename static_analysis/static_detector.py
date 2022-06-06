@@ -54,6 +54,7 @@ class Static_Detector:
                 values = self.getValues(url)
                 print(values)
             sleep(5)
+            print("Waiting")
 
 
 s_monitor = Static_Detector()
