@@ -33,7 +33,7 @@ if __name__ == "__main__":
         procList.display_history()    
         sleep(3)
 
-        procList.increment_counter()
+        # procList.increment_counter()
 
-        if procList.counter%5 == 0:
-            procList.killAllProcs()
+        # if procList.counter%5 == 0:
+        #     procList.killAllProcs()

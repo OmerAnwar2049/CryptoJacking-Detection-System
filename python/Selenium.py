@@ -1,32 +1,39 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+import chromedriver_autoinstaller
 import urllib.request
-# import yara
 
-
-def get_url(url):
-    WEBDRIVER_PATH = '/usr/local/bin/chromedriver'
-    driver = webdriver.Chrome(WEBDRIVER_PATH)
+# Returns in key value paairs the javascript on a given web page
+def get_Javascript(url):
+    chromedriver_autoinstaller.install()
+    # WEBDRIVER_PATH = 'C:\Windows\chromedriver'
+    driver = webdriver.Chrome()
     URL = url
     driver.get(URL)
     scripts = driver.find_elements(By.TAG_NAME, "script")
 
     sources = {}
+    sources["Embedded JS"] = ""
     for script in scripts:
         sources[script.get_attribute("src")] = ""
 
+        # check for embedded javascript
+        if script.get_attribute("innerHTML") != "":
+            sources["Embedded JS"] += script.get_attribute("innerHTML")
+            
+
     for source in sources.keys():
         url = source
-        file = urllib.request.urlopen(url)
-        sources[source] = file.read().decode('utf-8')
-        # print(sources[source])
-        # print()
+        if url == '' or url == "Embedded JS":
+            continue
+        try:
+            response = urllib.request.urlopen(url)
+            sources[source] = response.read().decode('utf-8')
+        except:
+            print("Error: " + url)
+            continue
+
     driver.quit()
     return sources
 
-
-values = get_url(
-    "http://127.0.0.1:3000/miner/index.html")
-for value in values.keys():
-    print(value)
-    # print()
+print(get_Javascript("https://stackoverflow.com/questions/57900225/how-to-get-url-from-chrome-by-python"))
