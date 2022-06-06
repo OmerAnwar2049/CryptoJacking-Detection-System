@@ -25,7 +25,7 @@ if __name__ == "__main__":
                 print("=============\n")
 
                 procList.addProc(process)
-                
+                print(process)    
             else:
                 procList.update(process["pid"],process["cpu_usage"])
 
