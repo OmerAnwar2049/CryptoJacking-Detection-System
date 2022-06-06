@@ -3,12 +3,12 @@ import os
 
 
 class Process_List:
-    
-    def __init__(self) -> None:
+
+    def __init__(self) :
 
         self.proc_dict = {}
         self.counter = 0
-    
+
     ## def getter,setter
 
     def addProc(self,p):
@@ -29,6 +29,6 @@ class Process_List:
     def killProc(self,id):
         os.kill(id,9)
         self.proc_dict.pop(id.process['pid'])
-        
+
     def increment_counter(self):
         self.counter+=1
