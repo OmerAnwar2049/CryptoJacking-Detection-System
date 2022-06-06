@@ -150,4 +150,3 @@ def extract_suspicious(summary = False):
         time.sleep(0.7)
 
     return suspicious(processes)
-    
