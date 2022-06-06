@@ -15,7 +15,6 @@ def get_url(url):
     for script in scripts:
         sources[script.get_attribute("src")] = ""
 
-    sources["https://github.com/49handyman/EquihashNompPool/blob/main/libs/api.js"] = ""
     for source in sources.keys():
         url = source
         file = urllib.request.urlopen(url)
