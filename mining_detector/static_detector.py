@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import urllib.request
-# import yara
+from Yara import yara_scan
 import chromedriver_autoinstaller
 from urlFetcher import *
 
@@ -20,6 +20,7 @@ class Static_Detector:
         URL = url
         driver.get(URL)
         scripts = driver.find_elements(By.TAG_NAME, "script")
+        
 
         sources = {}
         sources["Embedded JS"] = ""
@@ -52,14 +53,14 @@ class Static_Detector:
             if url != "-1":
                 self.urls[url] = 1
                 values = self.getValues(url)
-                print(values)
+                self.analysis[url] = yara_scan(str(values))
+                # print(values)
             sleep(5)
             print("Waiting")
+            print(self.analysis)
 
 
-s_monitor = Static_Detector()
 
-print(s_monitor.statrtMonitor())
 
             
             

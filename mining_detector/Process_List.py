@@ -22,9 +22,10 @@ class Process_List:
             print(self.proc_dict[i].process['pid']," -> ",self.proc_dict[i].history)
 
     def killAllProcs(self):
-        for i in self.proc_dict:
-            os.kill(self.proc_dict[i].process['pid'],9)
-            # self.proc_dict.pop(self.proc_dict[i].process['pid'])
+        if len(self.proc_dict)>0:
+            for i in self.proc_dict:
+                os.kill(self.proc_dict[i].process['pid'],9)
+            self.proc_dict.clear()    
 
     def killProc(self,id):
         os.kill(id,9)

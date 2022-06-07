@@ -9,7 +9,6 @@ rule miningStrings {
     $str7 = "coin" nocase
     $str8 = "pool" nocase
     $str9 = "ether" nocase
-<<<<<<< HEAD
     $str10 = "blocks" nocase
     $str11 = "market" nocase
     $str12 = "payment" nocase
@@ -44,14 +43,3 @@ rule commandLineParamsUsedForCryptomining{
 }
 // https://github.com/bcoin-org/bcoin
 // https://github.com/Neo23x0/signature-base/blob/master/yara/pua_cryptocoin_miner.yar
-=======
-    $str9 = "blocks" nocase
-    $str10 = "market" nocase
-    $str11 = "payment" nocase
-
-
-
-  condition:
-    any of them
-}
->>>>>>> 3b4c7917bba4e591cce0b690f41906a45a87e6cb
